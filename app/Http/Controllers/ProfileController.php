@@ -11,50 +11,49 @@ use Illuminate\View\View;
 
 class ProfileController extends Controller
 {
-    /**
-     * Display the user's profile form.
-     */
-    public function edit(Request $request): View
+    public function edit()
     {
-        return view('profile.edit', [
-            'user' => $request->user(),
-        ]);
+        return view('profile.edit', ['user' => auth()->user()]);
     }
 
-    /**
-     * Update the user's profile information.
-     */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
+    public function update(Request $request)
     {
-        $request->user()->fill($request->validated());
-
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
-        }
-
-        $request->user()->save();
-
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
-    }
-
-    /**
-     * Delete the user's account.
-     */
-    public function destroy(Request $request): RedirectResponse
-    {
-        $request->validateWithBag('userDeletion', [
-            'password' => ['required', 'current_password'],
+        $request->validate([
+            'fullname' => 'required|string|max:255',
+            'bio' => 'nullable|string',
+            'location' => 'nullable|string|max:255',
         ]);
 
-        $user = $request->user();
+        $user = auth()->user();
+        $user->update($request->only('fullname','bio','location'));
 
-        Auth::logout();
+        return back()->with('success', 'Profil diperbarui');
+    }
 
-        $user->delete();
+    public function preferences(Request $request)
+    {
+        $user = auth()->user();
+        $user->update([
+            'email_notify' => $request->has('email_notify'),
+            'dark_mode' => $request->has('dark_mode'),
+            'adult_content' => $request->has('adult_content'),
+            'language' => $request->language,
+        ]);
 
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
+        return back()->with('success', 'Preferensi diperbarui');
+    }
 
-        return Redirect::to('/');
+    public function avatar(Request $request)
+    {
+        $request->validate([
+            'avatar' => 'required|image|max:2048'
+        ]);
+
+        $path = $request->file('avatar')->store('avatars','public');
+
+        $user = auth()->user();
+        $user->update(['avatar' => $path]);
+
+        return back()->with('success', 'Avatar diperbarui');
     }
 }
