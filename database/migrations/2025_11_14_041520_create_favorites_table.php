@@ -6,20 +6,23 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('favorites', function (Blueprint $table) {
             $table->id();
+
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+
+            // polymorphic relation
+            $table->morphs('favoritable');
+
             $table->timestamps();
+
+            // prevent duplicate favorites
+            $table->unique(['user_id', 'favoritable_id', 'favoritable_type']);
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('favorites');
