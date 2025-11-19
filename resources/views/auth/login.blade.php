@@ -1,5 +1,5 @@
 <x-guest-layout>
-    <div class="flex justify-center py-16 bg-[#f0eff5]">
+    <div class="flex justify-center py-16 ">
         <div class="bg-white w-full max-w-md shadow-md rounded-xl p-10">
 
             <h1 class="text-center text-xl font-bold mb-6">Masuk ke TelyuTV</h1>

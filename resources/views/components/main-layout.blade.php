@@ -12,6 +12,10 @@
 
     <!-- Load Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Lucide Icons for aesthetic vectors -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Load Inter Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
     <style>
         /* Custom font import for better aesthetics */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
@@ -39,26 +43,29 @@
 
             <!-- Logo -->
             <div class="flex items-center gap-3">
-                <div
-                    class="h-8 w-8 bg-red-600 rounded-full flex items-center justify-center text-white font-bold text-sm">
-                    <img src="/logo.PNG" class="h-7" alt="logo">
+                <div>
+                    <img src="/logo.PNG" class="h-8" alt="logo">
                 </div>
-                <span class="font-semibold text-lg text-gray-800">{{ config('app.name') }}</span>
+                <span class="font-semibold text-lg text-red-600">{{ config('app.name') }}</span>
             </div>
 
             <!-- Main Nav (Top-Right) -->
             <nav class="hidden md:flex items-center gap-8 text-sm font-medium">
-                <a href="#dashboard" class="text-gray-600 hover:text-red-600 transition duration-150">Beranda</a>
-                <a href="#kategori" class="text-gray-600 hover:text-red-600 transition duration-150">Kategori</a>
-                <a href="#komunitas" class="text-gray-600 hover:text-red-600 transition duration-150">Komunitas</a>
+                <a href="{{ route('dashboard') }}"
+                    class="text-gray-600 hover:text-red-600 transition duration-150">Beranda</a>
+                <a href="{{ route('kategori') }}"
+                    class="text-gray-600 hover:text-red-600 transition duration-150">Kategori</a>
+                <a href="{{ route('komunitas') }}"
+                    class="text-gray-600 hover:text-red-600 transition duration-150">Komunitas</a>
             </nav>
 
             <!-- Right Actions -->
             <div class="flex items-center gap-6">
 
                 {{-- Profile --}}
-                <a href="/profile" class="flex items-center gap-2">
-                    <img src="{{ Auth::user()->avatar ?? '/default-avatar.png' }}" class="h-8 w-8 rounded-full object-cover">
+                <a href="{{ route('profile') }}" class="flex items-center gap-2">
+                    <img src="{{ Auth::user()->avatar ? asset('storage/' . Auth::user()->avatar) : '/default-avatar.png' }}"
+                        class="h-8 w-8 rounded-full object-cover">
                 </a>
 
                 {{-- Logout --}}
@@ -76,48 +83,51 @@
 
         <!-- Left Sidebar (Fixed Width, Full Height) -->
         <aside class="w-60 bg-white border-r min-h-screen p-6 shadow-md hidden md:block">
-            <h3 class="text-xs font-semibold uppercase text-gray-400 mb-4 tracking-wider">Categories</h3>
             <ul class="space-y-3 text-sm">
 
                 <li>
                     <a href="#music"
                         class="flex items-center p-2 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600 transition duration-150">
-                        <span class="w-5 h-5 mr-3">🎵</span> MusicTV
+                        <span class="w-5 h-5 mr-3"><i data-lucide="music" class="w-6 h-6"></i></span> MusicTV
                     </a>
                 </li>
 
                 <li>
                     <a href="#food"
                         class="flex items-center p-2 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600 transition duration-150">
-                        <span class="w-5 h-5 mr-3">🍽️</span> FoodTV
+                        <span class="w-5 h-5 mr-3"><i data-lucide="utensils" class="w-6 h-6"></i></span> FoodTV
                     </a>
                 </li>
 
                 <li>
                     <a href="#study"
                         class="flex items-center p-2 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600 transition duration-150">
-                        <span class="w-5 h-5 mr-3">📚</span> StudyTV
+                        <span class="w-5 h-5 mr-3"><i data-lucide="book" class="w-6 h-6"></i></span> StudyTV
                     </a>
                 </li>
 
                 <li>
                     <a href="#games"
                         class="flex items-center p-2 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600 transition duration-150">
-                        <span class="w-5 h-5 mr-3">🎮</span> GamesTV
+                        <span class="w-5 h-5 mr-3"><i data-lucide="gamepad-2" class="w-6 h-6"></i></span> GamesTV
                     </a>
                 </li>
 
                 <li>
                     <a href="#movies"
                         class="flex items-center p-2 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600 transition duration-150">
-                        <span class="w-5 h-5 mr-3">🎬</span> MoviesTV
+                        <span class="w-5 h-5 mr-3">
+                            <i data-lucide="film" class="w-6 h-6"></i>
+                        </span> MoviesTV
                     </a>
                 </li>
 
-                <li class="pt-2 border-t mt-4">
-                    <a href="#community"
-                        class="flex items-center p-2 rounded-lg text-red-600 font-semibold bg-red-50 transition duration-150">
-                        <span class="w-5 h-5 mr-3">👥</span> Komunitas
+                <li>
+                    <a href="{{ route('favorites') }}"
+                        class="flex items-center p-2 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600 transition duration-150">
+                        <span class="w-5 h-5 mr-3">
+                            <i data-lucide="heart" class="w-6 h-6"></i>
+                        </span> Favoritku
                     </a>
                 </li>
 
@@ -125,12 +135,17 @@
         </aside>
 
         <!-- Main Content Area (Fills remaining space, is scrollable) -->
-        <main class="flex-1 main-content-scroll p-8">
+        <main class="flex-1 main-content-scroll">
 
             {{ $slot }}
 
         </main>
     </div>
+
+    <!-- Initialize Lucide Icons -->
+    <script>
+        lucide.createIcons();
+    </script>
 
 </body>
 

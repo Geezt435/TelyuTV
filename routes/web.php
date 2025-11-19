@@ -21,6 +21,22 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::get('/kategori', function () {
+    return view('kategori');
+})->middleware(['auth', 'verified'])->name('kategori');
+
+Route::get('/kategori/{slug}', function ($slug) {
+    return view('kategori-detail', ['slug' => $slug]);
+})->middleware(['auth', 'verified'])->name('kategori.detail');
+
+Route::get('/komunitas', function () {
+    return view('komunitas');
+})->middleware(['auth', 'verified'])->name('komunitas');
+
+Route::get('/favorites', function () {
+    return view('favorites');
+})->middleware(['auth', 'verified'])->name('favorites');
+
 Route::middleware(['auth'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
