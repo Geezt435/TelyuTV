@@ -3,6 +3,7 @@
 To run:
 
 ```
-php artisan migrate:fresh
 php artisan serve
+php artisan storage:link
+php artisan migrate:fresh --seed
 ```

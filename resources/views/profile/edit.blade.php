@@ -5,16 +5,32 @@
 
             <div class="flex items-start gap-10">
 
-                {{-- Left column: avatar --}}
+                {{-- Left column: avatar & buttons --}}
                 <div class="flex flex-col items-center w-60">
-                    <img src="{{ Auth::user()->avatar ? asset('storage/' . Auth::user()->avatar) : '/default-avatar.png' }}"
-                        class="w-32 h-32 rounded-full object-cover shadow">
+                    {{-- Avatar Section --}}
+                    <div class="relative mb-6">
+                        {{-- Avatar Image with Placeholder --}}
+                        <img src="{{ Auth::user()->avatar ? asset('storage/' . Auth::user()->avatar) : '/default-avatar.png' }}"
+                            class="w-32 h-32 rounded-full object-cover shadow border border-gray-200">
 
-                    <form action="{{ route('profile.avatar') }}" method="POST" enctype="multipart/form-data"
-                        class="mt-4">
+                        {{-- Online/Status Indicator (Green Dot) - Optional, based on target image --}}
+                        <span class="absolute bottom-1 right-1 block h-4 w-4 rounded-full ring-2 ring-white bg-green-500"></span>
+                    </div>
+
+                    {{-- Profile Action Buttons --}}
+                    <button class="w-full px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-md text-sm font-medium mb-3">
+                        Edit Profil
+                    </button>
+
+                    {{-- Form and Button for Changing Avatar --}}
+                    <form id="avatarForm" action="{{ route('profile.avatar') }}" method="POST" enctype="multipart/form-data" class="w-full">
                         @csrf
-                        <input type="file" name="avatar" class="mb-2">
-                        <button class="px-4 py-2 bg-red-600 text-white rounded-md text-sm">
+                        {{-- Hidden File Input --}}
+                        <input type="file" name="avatar" id="avatarInput" class="hidden" onchange="document.getElementById('avatarForm').submit();">
+
+                        {{-- Button to Trigger File Input --}}
+                        <button type="button" onclick="document.getElementById('avatarInput').click()"
+                            class="w-full px-4 py-2 bg-white border border-red-600 text-red-600 hover:bg-red-50 rounded-md text-sm font-medium">
                             Ganti Avatar
                         </button>
                     </form>
@@ -23,6 +39,7 @@
                 {{-- Right column: details --}}
                 <div class="flex-1">
 
+                    {{-- User Details Section --}}
                     <div>
                         <h3 class="text-lg font-bold mb-2">Detail Pengguna</h3>
 
@@ -53,6 +70,9 @@
 
                     </div>
 
+                    <hr class="my-6"> {{-- Optional: Add a separator --}}
+
+                    {{-- Preferences Section --}}
                     <div>
                         <h3 class="text-lg font-bold mb-2">Pengaturan Preferensi</h3>
 

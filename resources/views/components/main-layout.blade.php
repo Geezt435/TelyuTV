@@ -85,42 +85,19 @@
         <aside class="w-60 bg-white border-r min-h-screen p-6 shadow-md hidden md:block">
             <ul class="space-y-3 text-sm">
 
+                @foreach ($navCategories as $cat)
                 <li>
-                    <a href="#music"
+                    <a href="{{ route('kategori.detail', $cat->name) }}"
                         class="flex items-center p-2 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600 transition duration-150">
-                        <span class="w-5 h-5 mr-3"><i data-lucide="music" class="w-6 h-6"></i></span> MusicTV
-                    </a>
-                </li>
 
-                <li>
-                    <a href="#food"
-                        class="flex items-center p-2 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600 transition duration-150">
-                        <span class="w-5 h-5 mr-3"><i data-lucide="utensils" class="w-6 h-6"></i></span> FoodTV
-                    </a>
-                </li>
-
-                <li>
-                    <a href="#study"
-                        class="flex items-center p-2 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600 transition duration-150">
-                        <span class="w-5 h-5 mr-3"><i data-lucide="book" class="w-6 h-6"></i></span> StudyTV
-                    </a>
-                </li>
-
-                <li>
-                    <a href="#games"
-                        class="flex items-center p-2 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600 transition duration-150">
-                        <span class="w-5 h-5 mr-3"><i data-lucide="gamepad-2" class="w-6 h-6"></i></span> GamesTV
-                    </a>
-                </li>
-
-                <li>
-                    <a href="#movies"
-                        class="flex items-center p-2 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600 transition duration-150">
                         <span class="w-5 h-5 mr-3">
-                            <i data-lucide="film" class="w-6 h-6"></i>
-                        </span> MoviesTV
+                            <i data-lucide="{{ $cat->favicon_logo }}" class="w-6 h-6"></i>
+                        </span>
+
+                        {{ $cat->name }}
                     </a>
                 </li>
+                @endforeach
 
                 <li>
                     <a href="{{ route('favorites') }}"

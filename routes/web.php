@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Category;
+use App\Models\Content;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use Illuminate\Support\Facades\Route;
@@ -25,8 +27,10 @@ Route::get('/kategori', function () {
     return view('kategori');
 })->middleware(['auth', 'verified'])->name('kategori');
 
-Route::get('/kategori/{slug}', function ($slug) {
-    return view('kategori-detail', ['slug' => $slug]);
+Route::get('/kategori/{name}', function ($name) {
+    $category = Category::where('name', $name)->firstOrFail();
+    $contents = Content::where('category_id', $category->id)->get();
+    return view('kategori-detail', compact('category', 'contents'));
 })->middleware(['auth', 'verified'])->name('kategori.detail');
 
 Route::get('/komunitas', function () {
