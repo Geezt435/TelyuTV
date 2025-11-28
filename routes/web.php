@@ -24,10 +24,12 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/kategori', function () {
-    return view('kategori');
+    return view('kategori', [
+        'categories' => \App\Models\Category::all()
+    ]);
 })->middleware(['auth', 'verified'])->name('kategori');
 
-Route::get('/kategori/{name}', function ($name) {
+Route::get('/kategori-detail/{name}', function ($name) {
     $category = Category::where('name', $name)->firstOrFail();
     $contents = Content::where('category_id', $category->id)->get();
     return view('kategori-detail', compact('category', 'contents'));

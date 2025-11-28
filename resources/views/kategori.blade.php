@@ -1,26 +1,28 @@
 <x-main-layout>
-    <div class="max-w-4xl mx-auto py-10">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
 
-        <h1 class="text-3xl font-bold mb-6">
-            Kategori: {{ $name }}
-        </h1>
+        @foreach($categories as $category)
+        <div
+            class="bg-white p-6 rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-shadow duration-300">
 
-        @if ($posts->count() == 0)
-        <p class="text-gray-500">Belum ada postingan dalam kategori ini.</p>
-        @endif
-
-        <div class="space-y-4">
-            @foreach ($posts as $post)
-            <div class="p-4 bg-white rounded shadow">
-                <h2 class="text-xl font-semibold">{{ $post->title }}</h2>
-                <p class="text-gray-600">{{ Str::limit($post->content, 150) }}</p>
-
-                <a href="{{ route('post.show', $post->slug) }}" class="text-red-600 hover:text-red-800 font-semibold">
-                    Baca Selengkapnya →
-                </a>
+            <div class="flex items-center space-x-4 mb-4">
+                <i data-lucide="{{ $category->favicon_logo }}" class="w-8 h-8 text-red-600"></i>
             </div>
-            @endforeach
+
+            <div class="flex items-center space-x-4 mb-4">
+                <h2 class="text-xl font-bold text-gray-900">{{ $category->name }}</h2>
+            </div>
+
+            <p class="text-gray-500 mb-6 text-sm">
+                {{ $category->description }}
+            </p>
+
+            <a href="{{ route('kategori.detail', $category->name) }}"
+                class="w-full block text-center py-3 px-4 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-800 transition-colors duration-200 shadow-md">
+                Jelajahi
+            </a>
         </div>
+        @endforeach
 
     </div>
 
